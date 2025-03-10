@@ -7,5 +7,5 @@ import com.bank.sushil.entity.Userz;
 
 public interface UserRepository extends JpaRepository<Userz, String>{
 
-	Userz findByUserNameIgnoreCase(String username);
+	Userz findByUsernameIgnoreCase(String username);
 }

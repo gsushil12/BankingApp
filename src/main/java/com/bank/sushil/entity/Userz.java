@@ -1,11 +1,16 @@
 package com.bank.sushil.entity;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -32,17 +37,17 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Userz {
+public class Userz implements UserDetails{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private String uid;
 
-	private String firstName;
-	private String lastName;
+	private String firstname;
+	private String lastname;
 
 	@Column(unique = true, nullable = false)
-	private String userName;
+	private String username;
 	private String email;
 	private Date dob;
 	private long tel;
@@ -66,5 +71,11 @@ public class Userz {
 
 	@UpdateTimestamp
 	private LocalDateTime updatedAt;
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+	}
+
 
 }
